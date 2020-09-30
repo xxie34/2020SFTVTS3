@@ -1,0 +1,838 @@
+﻿*****************************************************************************************************************************************
+Session 2
+*****************************************************************************************************************************************
+
+*****************************************************************************************************************************************
+WAIT, stop, cover sheets
+*****************************************************************************************************************************************
+
+<picture coversheet1>
+/ items = coversheet1
+/ size = (750,750)
+</picture>
+
+<item coversheet1>
+/1 = "studyCoverSheet3_1.jpg"
+</item>
+
+<trial coversheet1>  
+/ frames = [1=coversheet1]
+/ trialduration = 5000
+</trial>
+
+<block coversheet1>
+/ screencolor = (255, 255, 255)
+/ trials = [1 = coversheet1]
+</block>
+
+
+
+<picture coversheet2>
+/ items = coversheet1
+/ size = (750,750)
+</picture>
+
+<item coversheet2>
+/1 = "studyCoverSheet3_2.jpg"
+</item>
+
+<trial coversheet2>  
+/ frames = [1=coversheet2]
+/ trialduration = 5000
+</trial>
+
+<block coversheet2>
+/ screencolor = (255, 255, 255)
+/ trials = [1 = coversheet2]
+</block>
+
+<trial waitP>
+/ validresponse = ("P") 
+</trial>
+
+<block waitP>
+/ bgstim = (wait)
+/ trials = [1 = waitP]
+</block>
+
+<text wait>  
+/ numitems = 1
+/ items = ("Please wait for the experimenter")
+/ font = ("Times New Roman", -24, 700, 0, 49)
+/ txbgcolor = (255, 255, 255)
+/ position = (50, 15)
+</text>
+
+<text stop>  
+/ numitems = 1
+/ items = ("Thank you for participating in the study! Please wait quietly until everyone is finished.")
+/ font = ("Times New Roman", -24, 700, 0, 49)
+/ txbgcolor = (255, 255, 255)
+/ position = (50, 15)
+</text>
+
+<trial stop>
+/ validresponse = ("Q") 
+</trial>
+
+<block stop>
+/ bgstim = (stop)
+/ trials = [1 = stop]
+</block>
+
+*****************************************************************************************************************************************
+10 Initial Demographic Questions
+*****************************************************************************************************************************************
+<survey 10Initial>
+/ pages = [1=identifiers]
+/ showpagenumbers = False
+/ showquestionnumbers = False
+/ showquestionnumbers = False
+</survey>
+
+<surveypage identifiers>
+/ caption = "Please enter the information below:"
+/ questions = [1=FirstName; 2=LastName; 3=Wiscard; 4=Email]
+/ showpagenumbers = False
+/ showquestionnumbers = False
+/ showquestionnumbers = False
+</surveypage>
+
+<textbox FirstName>
+/ caption = "First Name"
+/ textboxsize = (40,5)
+/ position = (10, 14)
+/ required = true
+/ mask = alphabetic
+
+</textbox>
+
+<textbox LastName>
+/ caption = "Last Name"
+/ textboxsize = (40,5)
+/ position = (60, 14)
+/ required = true
+/ mask = alphabetic
+
+</textbox>
+
+<textbox Wiscard>
+/ caption = "Student ID Number"
+/ textboxsize = (40,5)
+/ position = (10, 45)
+/ required = true
+/ mask = integer
+
+</textbox>
+
+<textbox Email>
+/ caption = "Email (WiscMail Account)"
+/ textboxsize = (40,5)
+/ position = (60, 45)
+/ required = true
+/ mask = emailaddress
+
+</textbox>
+
+
+*****************************************************************************************************************************************
+ENVIRONMENTAL IMPACT TEST
+*****************************************************************************************************************************************
+<survey EIT>
+/ pages = [1=EIT1; 2=EIT2;3=EIT3]
+/ showpagenumbers = False
+/ showquestionnumbers = False
+</survey>
+
+<surveypage EIT1>
+/ questions = [1=Lights; 2=ReuseBottle; 3=Windows; 4=RecycleBottlesCans; 5=RecyclePaper; 6=ColdWasher]
+/ showpagenumbers = False
+/ showquestionnumbers = False
+</surveypage>
+
+<surveypage EIT2>
+/ questions = [1=FullLaundry; 2=WalkClass; 3=DonateClothes; 4=Compost; 5=LocalFood; 6=WaterTeeth]
+/ showpagenumbers = False
+/ showquestionnumbers = False
+</surveypage>
+
+<surveypage EIT3>
+/ questions = [1=MinPackaging; 2=Fairtrade; 3=ThriftShop; 4=DryLaundry; 5=UnplugDevices; 6=ReusableBags]
+/ showpagenumbers = False
+/ showquestionnumbers = False
+</surveypage>
+
+<radiobuttons Lights>
+/ caption = "Do you switch off the light when you’re the last to leave a room? "
+/ options = ("Never", "Sometimes", "Always")
+/ optionvalues = ("1", "2", "3")
+/ orientation = horizontal
+/ position = (5, 5)
+/ required = true
+</radiobuttons>
+
+<radiobuttons ReuseBottle>
+/ caption = "Do you use a reusable water bottle or coffee mug instead of plastic water bottles or paper cups?"
+/ options = ("Never", "Sometimes", "Always")
+/ optionvalues = ("1", "2", "3")
+/ orientation = horizontal
+/ position = (5, 18)
+/ required = true
+</radiobuttons>
+
+<radiobuttons Windows>
+/ caption = "When it is hot in your room, do you open your window instead of turning on a fan or air conditioner?"
+/ options = ("Never", "Sometimes", "Always")
+/ optionvalues = ("1", "2", "3")
+/ orientation = horizontal
+/ position = (5, 31)
+/ required = true
+</radiobuttons>
+
+<radiobuttons RecycleBottlesCans>
+/ caption = "Do you recycle bottles and cans? "
+/ options = ("Never", "Sometimes", "Always")
+/ optionvalues = ("1", "2", "3")
+/ orientation = horizontal
+/ position = (5, 44)
+/ required = true
+</radiobuttons>
+
+<radiobuttons RecyclePaper>
+/ caption = "Do you recycle cardboard and paper? "
+/ options = ("Never", "Sometimes", "Always")
+/ optionvalues = ("1", "2", "3")
+/ orientation = horizontal
+/ position = (5, 57)
+/ required = true
+</radiobuttons>
+
+<radiobuttons ColdWasher>
+/ caption = "Do you use the cold water setting on the washing machine when doing your laundry? "
+/ options = ("Never", "Sometimes", "Always")
+/ optionvalues = ("1", "2", "3")
+/ orientation = horizontal
+/ position = (5, 70)
+/ required = true
+</radiobuttons>
+
+<radiobuttons FullLaundry>
+/ caption = "Do you wait until you have a full load of laundry to wash rather than use the machine for just a few items?"
+/ options = ("Never", "Sometimes", "Always")
+/ optionvalues = ("1", "2", "3")
+/ orientation = horizontal
+/ position = (5, 5)
+/ required = true
+</radiobuttons>
+
+<radiobuttons WalkClass>
+/ caption = "Do you walk to class instead of taking the bus in all seasons and weather conditions?"
+/ options = ("Never", "Sometimes", "Always")
+/ optionvalues = ("1", "2", "3")
+/ orientation = horizontal
+/ position = (5, 18)
+/ required = true
+</radiobuttons>
+
+<radiobuttons DonateClothes>
+/ caption = "Do you donate or recycle old clothes and other unwanted items rather than throw them out?"
+/ options = ("Never", "Sometimes", "Always")
+/ optionvalues = ("1", "2", "3")
+/ orientation = horizontal
+/ position = (5, 31)
+/ required = true
+</radiobuttons>
+
+<radiobuttons Compost>
+/ caption = "Do you use the compost bin regularly? (choose Sometimes if you don’t have access to one)"
+/ options = ("Never", "Sometimes", "Always")
+/ optionvalues = ("1", "2", "3")
+/ orientation = horizontal
+/ position = (5, 44)
+/ required = true
+</radiobuttons>
+
+<radiobuttons LocalFood>
+/ caption = "Do you buy locally sourced food?"
+/ options = ("Never", "Sometimes", "Always")
+/ optionvalues = ("1", "2", "3")
+/ orientation = horizontal
+/ position = (5, 57)
+/ required = true
+</radiobuttons>
+
+<radiobuttons WaterTeeth>
+/ caption = "Do you shut off the water while you are brushing your teeth?"
+/ options = ("Never", "Sometimes", "Always")
+/ optionvalues = ("1", "2", "3")
+/ orientation = horizontal
+/ position = (5, 70)
+/ required = true
+</radiobuttons>
+
+<radiobuttons MinPackaging>
+/ caption = "Do you choose products with minimal/reusable packaging when possible? (glass bottles, non-boxed cosmetics, etc.)"
+/ options = ("Never", "Sometimes", "Always")
+/ optionvalues = ("1", "2", "3")
+/ orientation = horizontal
+/ position = (5, 5)
+/ required = true
+</radiobuttons>
+
+<radiobuttons Fairtrade>
+/ caption = "Do you buy recycled or fair-trade products when possible? (Printer paper, notebooks, clothing, tea, coffee, etc.) "
+/ options = ("Never", "Sometimes", "Always")
+/ position = (5, 18)
+/ optionvalues = ("1", "2", "3")
+/ orientation = horizontal
+/ required = true
+</radiobuttons>
+
+<radiobuttons ThriftShop>
+/ caption = "Do you buy from thrift shops when possible? "
+/ options = ("Never", "Sometimes", "Always")
+/ optionvalues = ("1", "2", "3")
+/ orientation = horizontal
+/ position = (5, 31)
+/ required = true
+</radiobuttons>
+
+<radiobuttons DryLaundry>
+/ caption = "Do you hang laundry to dry, inside or outside, rather than use a dryer? "
+/ options = ("Never", "Sometimes", "Always")
+/ optionvalues = ("1", "2", "3")
+/ orientation = horizontal
+/ position = (5, 44)
+/ required = true
+</radiobuttons>
+
+<radiobuttons UnplugDevices>
+/ caption = "Do you unplug the TV, chargers, and other devices when you are not using them?"
+/ options = ("Never", "Sometimes", "Always")
+/ optionvalues = ("1", "2", "3")
+/ orientation = horizontal
+/ position = (5, 57)
+/ required = true
+</radiobuttons>
+
+<radiobuttons ReusableBags>
+/ caption = "Do you use re-useable bags for shopping rather than plastic bags?"
+/ options = ("Never", "Sometimes", "Always")
+/ optionvalues = ("1", "2", "3")
+/ orientation = horizontal
+/ position = (5, 70)
+/ required = true
+</radiobuttons>
+
+
+*****************************************************************************************************************************************
+TEXT/ITEMS/PICTURES
+*****************************************************************************************************************************************
+<text pleasant>
+/ numitems = 10
+/ items = pleasant
+/ halign = center
+/ font = ("Times New Roman", -28, 700, 0, 49)
+/ txbgcolor = (255, 255, 255)
+</text>
+
+<item pleasant>
+/ 1 = "      HONOR      "
+/ 2 = "      LUCKY      "
+/ 3 = "     DIAMOND     "
+/ 4 = "      LOYAL      "
+/ 5 = "     FREEDOM     "
+/ 6 = "     RAINBOW     "
+/ 7 = "       LOVE      "
+/ 8 = "      HONEST     "
+/ 9 = "      PEACE      "
+/10 = "      HEAVEN     "
+</item>
+
+
+<text unpleasant>  
+/ numitems = 10
+/ items = unpleasant
+/ halign = center
+/ font = ("Times New Roman", -28, 700, 0, 49)
+/ txbgcolor = (255, 255, 255)
+</text>
+
+<item unpleasant>
+/ 1 = "       EVIL      "
+/ 2 = "      CANCER     "
+/ 3 = "     SICKNESS    "
+/ 4 = "     DISASTER    "
+/ 5 = "      FILTH      "
+/ 6 = "      VOMIT      "
+/ 7 = "       BOMB      "
+/ 8 = "      ROTTEN     "
+/ 9 = "      ABUSE      "
+/10= "       UGLY       "
+</item>
+
+<picture TargetB>
+/ numitems = 3
+/ items = ("bm1.bmp", "bm2.bmp" , "bm3.bmp")
+</picture>
+
+<item TargetBLabel>
+/1 = "Black"
+</item>
+
+<picture TargetA>  
+/ numitems = 3
+/ items = ("wm1.bmp", "wm2.bmp" , "wm3.bmp")
+</picture>
+
+<item TargetALabel>
+/1 = "White"
+</item>
+
+
+<text pressK>  
+/ numitems = 1
+/ items = ("Hit 'k' for ")
+/ font = ("Times New Roman", -24, 700, 0, 49)
+/ txbgcolor = (255, 255, 255)
+/ position = (75, 22)
+</text>
+
+<text pressD>  
+/ numitems = 1
+/ items = ("Hit 'd' for ")
+/ font = ("Times New Roman", -24, 700, 0, 49)
+/ txbgcolor = (255, 255, 255)
+/ position = (25, 22)
+</text>
+
+
+<text pleasantreminder>  
+/ numitems = 1
+/ items = ("pleasant")
+/ font = ("Times New Roman", -24, 700, 0, 49)
+/ txbgcolor = (255, 255, 255)
+/ position = (75, 25)
+</text>
+
+
+<text unpleasantreminder>  
+/ numitems = 1
+/ items = ("unpleasant")
+/ font = ("Times New Roman", -24, 700, 0, 49)
+/ txbgcolor = (255, 255, 255)
+/ position = (25, 25)
+</text>
+
+<text Whiteleft>  
+/ numitems = 1
+/ items = TargetALabel
+/ font = ("Times New Roman", -24, 700, 0, 49)
+/ txbgcolor = (255, 255, 255)
+/ position = (25, 25)
+</text>
+
+<text Whiteright>  
+/ numitems = 1
+/ items =  TargetALabel
+/ font = ("Times New Roman", -24, 700, 0, 49)
+/ txbgcolor = (255, 255, 255)
+/ position = (75, 25)
+</text>
+
+<text Blackleft>  
+/ numitems = 1
+/ items = TargetBLabel
+/ font = ("Times New Roman", -24, 700, 0, 49)
+/ txbgcolor = (255, 255, 255)
+/ position = (25, 25)
+</text>
+
+<text Blackright>  
+/ numitems = 1
+/ items = TargetBLabel
+/ font = ("Times New Roman", -24, 700, 0, 49)
+/ txbgcolor = (255, 255, 255)
+/ position = (75, 25)
+</text>
+
+<text pleasant_White>  
+/ numitems = 1
+/ items = ("pleasant or White")
+/ font = ("Times New Roman", -24, 700, 0, 49)
+/ txbgcolor = (255, 255, 255)
+/ position = (75, 25)
+</text>
+
+<text pleasant_Black>  
+/ numitems = 1
+/ items = ("pleasant or Black")
+/ font = ("Times New Roman", -24, 700, 0, 49)
+/ txbgcolor = (255, 255, 255)
+/ position = (75, 25)
+</text>
+
+<text unpleasant_White>  
+/ numitems = 1
+/ items = ("unpleasant or White")
+/ font = ("Times New Roman", -24, 700, 0, 49)
+/ txbgcolor = (255, 255, 255)
+/ position = (25, 25)
+</text>
+
+<text unpleasant_Black>  
+/ numitems = 1
+/ items = ("unpleasant or Black")
+/ font = ("Times New Roman", -24, 700, 0, 49)
+/ txbgcolor = (255, 255, 255)
+/ position = (25, 25)
+</text>
+
+
+<text errormessage>  
+/ numitems = 1
+/ items = ("      ERROR      ")
+/ font = ("Times New Roman", -28, 700, 0, 49)
+/ txbgcolor = (255, 255, 255)
+/ color = (255, 0, 0)
+</text>
+
+<text CalculatingIT>
+/ items = ("Calculating")
+/ fontstyle = ("Arial", 4.00%, true, false, false, false, 5, 0)
+/ hjustify = left
+/ position = (50,30)
+</text>
+
+<shape Rectangle1IT>
+/ shape = rectangle
+/ size = (4%,5%)
+/ position = (35.5,60)
+/ halign = center
+</shape>
+
+<shape Rectangle2IT>
+/ shape = rectangle
+/ size = (8%,5%)
+/ position = (35.5,60)
+/ halign = Left
+</shape>
+
+<shape Rectangle3IT>
+/ shape = rectangle
+/ size = (12%,5%)
+/ position = (35.5,60)
+/ halign = Left
+</shape>
+
+<shape Rectangle4IT>
+/ shape = rectangle
+/ size = (16%,5%)
+/ position = (35.5,60)
+/ halign = Left
+</shape>
+
+<shape Rectangle5IT>
+/ shape = rectangle
+/ size = (20%,5%)
+/ position = (35.5,60)
+/ halign = Left
+</shape>
+
+<shape Rectangle6IT>
+/ shape = rectangle
+/ size = (24%,5%)
+/ position = (35.5,60)
+/ halign = Left
+</shape>
+
+<shape Rectangle7IT>
+/ shape = rectangle
+/ size = (28%,5%)
+/ position = (35.5,60)
+/ halign = Left
+</shape>
+
+<shape Rectangle8IT>
+/ shape = rectangle
+/ size = (30%,5%)
+/ position = (35.5,60)
+/ halign = Left
+</shape>
+
+
+*****************************************************************************************************************************************
+PAGES
+*****************************************************************************************************************************************
+
+
+<page IAT>
+^^^^^
+IMPLICIT ASSOCIATION TEST
+</page>
+
+<page up>The tasks that you will be doing in this experiment involve CATEGORY JUDGMENT. On each trial, a stimulus will be displayed, and you must assign it to one of two categories. You should respond AS RAPIDLY AS POSSIBLE in categorizing each stimulus, but don't respond so fast that you make many errors. (Occasional errors are okay.)
+^^The two categories that you are to distinguish are:
+^^UNPLEASANT vs. PLEASANT words.
+^^Press the ‘d' key if the stimulus is an UNPLEASANT word.
+^But press ‘k' key if the stimulus is a PLEASANT word.
+</page>
+
+<page bw>The two categories that you are to distinguish are:
+^^Black faces vs. White faces.
+^^Press the ‘d' key if the stimulus is a Black face.
+^But press ‘k' key if the stimulus is a White face.
+</page>
+
+<page wb>The two categories that you are to distinguish are:
+^^White faces vs. Black faces.
+^^Press the ‘d' key if the stimulus is a White face.
+^But press ‘k' key if the stimulus is a Black face.
+</page>
+
+<page compatibleprac>The four categories that you are to distinguish are:
+^^UNPLEASANT vs. PLEASANT words
+^or
+^Black faces vs. White faces.
+^^Press the ‘d' key if the stimulus is
+^an UNPLEASANT word or a Black face.
+^^But press ‘k' key if the stimulus is
+^a PLEASANT word or a White face.
+^^^**The following trials are for PRACTICE**
+</page>
+
+<page compatible>The four categories that you are to distinguish are:
+^^UNPLEASANT vs. PLEASANT words
+^or
+^Black faces vs. White faces.
+^^Press the ‘d' key if the stimulus is
+^an UNPLEASANT word or a Black face.
+^^But press ‘k' key if the stimulus is
+^a PLEASANT word or a White face.
+</page>
+
+<page incompatibleprac>The four categories that you are to distinguish are:
+^^UNPLEASANT vs. PLEASANT words
+^or
+^White faces vs. Black faces.
+^^Press the ‘d' key if the stimulus is
+^an UNPLEASANT word or a White face.
+^^But press ‘k' key if the stimulus is
+^a PLEASANT word or a Black face.
+^^^**The following trials are for PRACTICE**
+</page>
+
+<page incompatible>The four categories that you are to distinguish are:
+^^UNPLEASANT vs. PLEASANT words
+^or
+^White faces vs. Black faces.
+^^Press the ‘d' key if the stimulus is
+^an UNPLEASANT word or a White face.
+^^But press ‘k' key if the stimulus is
+^a PLEASANT word or a Black face.
+</page>
+
+<page Speakers>The following presentation will be delivered using the speakers, so please put on your headphones now.
+</page>
+
+<page HabitBreakInter>The Prejudice Habit-Breaking Intervention
+</page>
+
+<page Introduction>Introduction
+</page>
+
+<page IATbutfirst>The task you just completed is called the Implicit Association Test, or “IAT” for short. In this presentation, you will learn about what the IAT is, what it measures, and how it relates to intergroup behaviors. We will then tell you your own IAT score. But, before we do, we need to give you some background information.
+</page>
+*****************************************************************************************************************************************
+TRIALS
+*****************************************************************************************************************************************
+<trial pleas>  
+/ validkeys = ("d", "k")
+/ correctresponse = ("k")
+/ frames = [1=pleasant]
+</trial>
+
+<trial unpleas>  
+/ validkeys = ("d", "k")
+/ correctresponse = ("d")
+/ frames = [1=unpleasant]
+</trial>
+
+
+<trial Blackright>  
+/ validkeys = ("d", "k")
+/ correctresponse = ("k")
+/ frames = [1=TargetB]
+</trial>
+
+<trial Blackleft>  
+/ validkeys = ("d", "k")
+/ correctresponse = ("d")
+/ frames = [1=TargetB]
+</trial>
+
+<trial Whiteright>  
+/ validkeys = ("d", "k")
+/ correctresponse = ("k")
+/ frames = [1=TargetA]
+</trial>
+
+<trial Whiteleft>  
+/ validkeys = ("d", "k")
+/ correctresponse = ("d")
+/ frames = [1=TargetA]
+</trial>
+
+
+<trial RectangleT>
+/ stimulustimes = [0=CalculatingIT, Rectangle1IT; 750=CalculatingIT, Rectangle2IT; 1500=CalculatingIT, Rectangle3IT; 2250=CalculatingIT, Rectangle4IT; 3000=CalculatingIT, Rectangle5IT; 3750=CalculatingIT, Rectangle6IT; 4500=CalculatingIT, Rectangle7IT; 5250=CalculatingIT, Rectangle8IT; 6000=CalculatingIT, Rectangle8IT]
+/ trialduration = 7000
+</trial>
+
+*****************************************************************************************************************************************
+IIAT BLOCKS
+*****************************************************************************************************************************************
+
+<block up_practice>
+/ screencolor = (255, 255, 255)
+/ bgstim = (pressK, pressD, pleasantreminder, unpleasantreminder)
+/ preinstructions = (up)
+/ trials = [1-20 = random(pleas, unpleas)]
+/ errormessage = (errormessage, 200)
+</block>
+
+<block bw_practice>
+/ screencolor = (255, 255, 255)
+/ bgstim = (pressK, pressD,Blackleft, Whiteright)
+/ preinstructions = (bw)
+/ trials = [1-20 = random(Blackleft, Whiteright)]
+/ errormessage = (errormessage, 200)
+</block>
+
+<block wb_practice>
+/ screencolor = (255, 255, 255)
+/ bgstim = (pressK, pressD,Blackright, Whiteleft)
+/ preinstructions = (wb)
+/ trials = [1-20 = random(Blackright, Whiteleft)]
+/ errormessage = (errormessage, 200)
+</block>
+
+<block compatibleprac>
+/ screencolor = (255, 255, 255)
+/ bgstim = (pressK, pressD,unpleasant_Black, pleasant_White)
+/ preinstructions = (compatibleprac)
+/ trials = [1-20 = random(Blackleft, Whiteright, pleas, unpleas)]
+/ errormessage = (errormessage, 200)
+</block>
+
+<block compatible>
+/ screencolor = (255, 255, 255)
+/ bgstim = (pressK, pressD,unpleasant_Black, pleasant_White)
+/ preinstructions = (compatible)
+/ trials = [1-40 = random(Blackleft, Whiteright, pleas, unpleas)]
+/ errormessage = (errormessage, 200)
+/ ontrialend = [if (block.compatible.latency  <= 10000 && block.compatible.currenttrialnumber != 1 ) values.sum1a =  values.sum1a + block.compatible.latency]
+/ ontrialend = [if (block.compatible.latency  <= 10000 && block.compatible.currenttrialnumber != 1 ) values.n1a =  values.n1a + 1]
+/ ontrialend = [if (block.compatible.latency  <= 10000 && block.compatible.currenttrialnumber != 1 ) values.ss1a =  values.ss1a + (block.compatible.latency * block.compatible.latency)]
+</block>
+
+<block incompatibleprac>
+/ screencolor = (255, 255, 255)
+/ bgstim = (pressK, pressD,pleasant_Black, unpleasant_White)
+/ preinstructions = (incompatibleprac)
+/ trials = [1-20 = random(Blackright, Whiteleft, pleas, unpleas)]
+/ errormessage = (errormessage, 200)
+</block>
+
+<block incompatible>
+/ screencolor = (255, 255, 255)
+/ bgstim = (pressK, pressD,pleasant_Black, unpleasant_White)
+/ preinstructions = (incompatible)
+/ trials = [1-40 = random(Blackright, Whiteleft, pleas, unpleas)]
+/ errormessage = (errormessage, 200)
+/ ontrialend = [if (block.incompatible.latency  <= 10000 && block.incompatible.currenttrialnumber != 1 ) values.sum1b =  values.sum1b + block.incompatible.latency]
+/ ontrialend = [if (block.incompatible.latency  <= 10000 && block.incompatible.currenttrialnumber != 1 ) values.n1b =  values.n1b + 1]
+/ ontrialend = [if (block.incompatible.latency  <= 10000 && block.incompatible.currenttrialnumber != 1 ) values.ss1b =  values.ss1b + (block.incompatible.latency * block.incompatible.latency)]
+</block>
+
+
+*****************************************************************************************************************************************
+EXPERIMENT
+*****************************************************************************************************************************************
+
+
+
+<instruct>  
+/ nextlabel =  ("Next")
+/ inputdevice = mouse
+/ prevlabel = ("Previous")
+/ lastlabel = ("Next")
+/ font = ("Times New Roman", -20, 400, 0, 34)
+</instruct>
+
+
+<defaults>
+/ canvasaspectratio = (20, 18)
+/ canvasposition = (50%, 50%)
+/ canvassize = (100%, 100%)
+</defaults>
+
+<values>
+/ BDIsum= 0
+/ sum1a = 0
+/ sum1b = 0
+/ n1a = 0
+/ n1b = 0
+/ ss1a = 0
+/ ss1b = 0
+/ magnitude = "unknown"
+</values>
+
+
+
+
+<expressions>
+/ m1a = values.sum1a / values.n1a
+/ m1b = values.sum1b / values.n1b
+/ sd1a = sqrt((values.ss1a - (values.n1a * (expressions.m1a * expressions.m1a))) / (values.n1a - 1))
+/ sd1b = sqrt((values.ss1b - (values.n1b * (expressions.m1b * expressions.m1b))) / (values.n1b - 1))
+/ sd = sqrt((((values.n1a - 1) * (expressions.sd1a * expressions.sd1a) + (values.n1b - 1) * (expressions.sd1b * expressions.sd1b)) + ((values.n1a + values.n1b) * ((expressions.m1a - expressions.m1b) * (expressions.m1a - expressions.m1b)) / 4) ) / (values.n1a + values.n1b - 1) )
+/ d = (m1b - m1a) / expressions.sd
+/ preferred = "unknown"
+/ notpreferred = "unknown"
+/ EITScore = (radiobuttons.Lights.response + radiobuttons.ReuseBottle.response + radiobuttons.Windows.response + radiobuttons.RecycleBottlesCans.response + radiobuttons.RecyclePaper.response + radiobuttons.ColdWasher.response + radiobuttons.FullLaundry.response + radiobuttons.WalkClass.response + radiobuttons.DonateClothes.response + radiobuttons.Compost.response + radiobuttons.LocalFood.response + radiobuttons.WaterTeeth.response + radiobuttons.MinPackaging.response + radiobuttons.Fairtrade.response + 
+radiobuttons.ThriftShop.response + radiobuttons.DryLaundry.response + radiobuttons.UnplugDevices.response + radiobuttons.ReusableBags.response)
+</expressions>
+
+
+
+
+
+
+
+
+
+
+
+*****************************************************************************************************************************************
+EXPERIMENT
+*****************************************************************************************************************************************
+
+<expt>
+/ blocks = [1 =10Initial; 2=coversheet1; 3=up_practice; 4=block2; 5=block3; 6=block4; 7=block5; 8=block6; 9=block7; 10= coversheet2]
+</expt>
+
+
+<variables>
+/ group = (1, 2 of 4) (block2=wb_practice, block3=incompatibleprac, block4=incompatible, block5=bw_practice, block6=compatibleprac, block7=compatible)
+/ default = (block2=bw_practice, block3=compatibleprac, block4=compatible, block5=wb_practice, block6=incompatibleprac, block7=incompatible)
+</variables>
+
+
+
+
+<data>
+/columns = [date, time, subject, expressions.d, values.magnitude, expressions.preferred, blockcode, blocknum, trialcode, trialnum, response, latency, correct]
+/labels=true
+/format=tab
+</data>

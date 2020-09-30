@@ -1,0 +1,1351 @@
+﻿<usermanual>
+						
+										SHORT ARROW FLANKER TEST
+SCRIPT INFO
+
+Script Author: Katja Borchert, Ph.D. (katjab@millisecond.com) for Millisecond Software, LLC
+Date: 03-28-2018
+last updated: 11-01-2019 by K.Borchert (katjab@millisecond.com) for Millisecond Software LLC
+
+Script Copyright © 11-01-2019 Millisecond Software
+
+
+BACKGROUND INFO
+
+											*Purpose*
+This script implements an short arrow version of the Flanker Test based on 
+the NIH toolbox Arrow Flanker Test used for adults 18+
+
+http://www.healthmeasures.net/explore-measurement-systems/nih-toolbox/intro-to-nih-toolbox/cognition
+
+The Inquisit Short Arrow Flanker Test is designed to use on touchscreen devices but instructions
+will adapt if no touchscreen is detected (in those cases the mouse is used instead)
+
+
+											  *Task*
+Participants see 5 arrows in the middle of the screen inside a box. They have to decide whether the central arrow 
+points right or left. The surrounding arrows (=flankers) either point in the same direction (congruent trials)
+or in the opposite direction (incongruent trials). 
+
+
+DATA FILE INFORMATION: 
+The default data stored in the data files are:
+
+(1) Raw data file: 'shortarrowflankertest_raw*.iqdat' (a separate file for each participant)
+
+build:							Inquisit build
+computer.platform:				the platform the script was run on
+date, time, subject, group:		date and time script was run with the current subject/groupnumber 
+/practice:						0 = test block; 1 = practice block
+/countPracticeBlocks:			counts the number of practice runs
+blockcode, blocknum:			the name and number of the current block
+trialcode, trialnum: 			the name and number of the currently recorded trial
+									(Note: not all trials that are run might record data) 
+
+/trialcount:					counts all trials per block
+/congruence:					determines the state of the flankers 
+									1 = congruent (target and flanker point in the same direction), 
+									2 = incongruent (target points in opposite direction)
+/selecttarget:					itemnumber of the current target (center) stimulus
+									1 = target points to right; 2 = target points to left
+/selectflanker:					itemnumber of the current flanker stimuli
+response:						the participant's response (leftresponsebutton, rightresponsebutton)
+correct:						the correctness of the response (0 = error or no response; 1 = correct)
+latency: 						the response latency (in ms); measured from onset of target to response (or trial timeout)
+list.ACC_practice.mean:			the current proportion correct at this point in practice
+/practicePass:					1 = participant passed practice; 0 = participant did not pass practice
+
+
+(2) Summary data file: 'shortarrowflankertest_summary*.iqdat' (a separate file for each participant)
+
+script.startdate:				date script was run
+script.starttime:				time script was started
+script.subjectid:				subject id number
+script.groupid:					group id number
+script.elapsedtime:				time it took to run script (in ms)
+computer.platform:				the platform the script was run on
+/completed:						0 = script was not completed; 1 = script was completed (all conditions run)
+
+/countPracticeBlocks:			counts the number of practice runs
+list.ACC_practice.mean:			the proportion correct at the end of the last practice run
+/practicePass:					1 = participant passed practice; 0 = participant did not pass practice
+
+/propcorrect:					overall proportion correct (test trials only)				
+/meanRT:						overall mean latency (in ms) of correct responses (test trials only)
+/propcorrect_congruent:			proportion correct for all congruent trials
+/propcorrect_incongruent:		proportion correct for all incongruent trials
+/meanrt_congruent: 				mean latency (ms) of correct responses to congruent targets
+/meanrt_incongruent: 			mean latency (ms) of correct responses to incongruent targets
+
+
+EXPERIMENTAL SET-UP:
+2 flanker congruence (congruent vs. incongruent), tested within
+
+1-3 Practice Blocks: each block runs 4 trials with errorfeedback (number of trials can be edited under section Editable Parameters)
+- participants have to get 75% correct to move on to the test block (proportion correct editable under section Editable Parameters)
+- script is aborted after 3 unsuccessful practice runs (maximum number of practice runs editable under section Editable Parameters)
+
+1 Test Block: runs 10 congruent (5 left, 5 right) and 10 incongruent trials (5 left, 5 right)
+(number of trials can be edited under section Editable Parameters)
+
+Trial Sequence:
+homeBase (waits for finger to press homeBase)
+-> presents fixation star for parameters.fixationDuration (default: 1000ms)
+-> presents 'middle' text reminder (default: 1000ms)
+-> presents the target and flanker and waits for response (default: response Timeout = 1750ms) Note: the selected response button is highlighted for 100ms
+-> homeBase
+
+
+STIMULI
+stimuli: 5 arrows pointing right or left (flanker, flanker, target, flanker, flanker)
+Arrows can be edited under section Editable Stimuli
+
+INSTRUCTIONS
+Instructions are similar to the NIH toolbox Arrow Flanker Test.
+Instruction text can be edited under section Editable Instructions
+
+
+EDITABLE CODE:
+check below for (relatively) easily editable parameters, stimuli, instructions etc. 
+Keep in mind that you can use this script as a template and therefore always "mess" with the entire code to further customize your experiment.
+
+The parameters you can change are:
+
+/fixationDuration:						the duration (in ms) of the star at the beginning of each trial (default: 1000ms)
+/reminderDuration:						the duration (in ms) of the 'middle' reminder (default: 1000ms)
+/homeBaseReminder:						the delay (in ms) of the home base reminder if finger is not returned to home base (default: 2000ms)
+/responseTimeout:						the response Timeout (ms); measured from onset of arrows (default: 1750ms)
+											Note: to allow for infinite response time, remove /response = timeout(parameters.responseTimeout)
+											from all relevant trials
+/errorFeedbackDuration:					the duration (in ms) of error feedback during practice (default: 5000ms)
+/correctFeedbackDuration:				the duration (in ms) of correct feedback during practice (default: 2000ms)
+
+
+/minPracticeACC:						the minimum proportion correct during a practice run that moves participant to the test (default: 0.75)
+/numberPracticeTrials:					the number of practice trials per practice run (default: 4)
+											Note: needs to be divisible by 4
+/maxPracticeRuns:						the maximum number of practice runs  (default: 3)
+/numberTestTrials:						the number of test trials run (default: 20)
+											Note: needs to be divisible by 4
+</usermanual>
+
+**************************************************************************************************************
+**************************************************************************************************************
+	EDITABLE PARAMETERS: change editable parameters here
+**************************************************************************************************************
+**************************************************************************************************************
+
+<parameters>
+/fixationDuration = 1000
+/reminderDuration = 1000
+/homeBaseReminder = 2000
+/responseTimeout = 1750
+/errorFeedbackDuration = 5000
+/correctFeedbackDuration = 2000
+
+/minPracticeACC = 0.75
+/numberPracticeTrials = 4
+/maxPracticeRuns = 3
+/numberTestTrials = 20
+</parameters>
+
+**************************************************************************************************************
+**************************************************************************************************************
+	EDITABLE STIMULI: change editable stimuli here
+**************************************************************************************************************
+**************************************************************************************************************
+
+<item arrows>
+/ 1 = "rightarrow.png"
+/ 2 = "leftarrow.png"
+</item>
+
+**************************************************************************************************************
+**************************************************************************************************************
+	EDITABLE INSTRUCTIONS: change instructions here
+	
+	To translate instructions, simply change the text elements in this section.
+**************************************************************************************************************
+**************************************************************************************************************
+Note: if any of the default values have changed, check whether the instructions
+need editing as well.
+
+<instruct>
+/ fontstyle = ("Arial", 2.8%, false, false, false, false, 5, 1)
+/ txcolor = black
+</instruct>
+
+
+<item instructions>
+/1 = "~n~n~n~n
+See, the button on the bottom of the screen?
+This is your homebase button.
+~n~n~n~n~n
+<%expressions.buttoninstruct1%> the homebase button now to start the instructions."
+/2 = "Five arrows appear on the screen. Choose the button that corresponds to where the MIDDLE arrow is pointing."
+/3 = "~n~n~n~n~n~nAfter each response, <%expressions.buttoninstruct2%> and leave it there until the next time you need to make a response."
+/4 = "~n~n~n~nSometimes all the arrows point in the same direction but sometimes the MIDDLE arrow points in a different direction like this:
+~n~n~n
+Always choose the button that corresponds to where the MIDDLE arrow is pointing."
+
+/5 = "Let's try it.
+
+A yellow star ★ will signal that the arrows are coming on screen. 
+
+Always keep your eyes on the ★, so that you don't miss the arrows!
+
+~nBe as fast as you can to choose the correct button.
+If you make a mistake, just keep on going!"
+/6 = "Let's do this again! 
+This time you will not get feedback whether you chose the correct button.
+
+Always keep your eyes on the yellow ★, so that you don't miss the arrows!
+
+~nBe as fast as you can to choose the correct button.
+If you make a mistake, just keep on going!"
+</item>
+
+<text rightPointInstructions>
+/ items = ("If the middle arrow points this direction, <%expressions.buttoninstruct3%> this button")
+/ position = (50%, 60%)
+/ size = (80%, 5%)
+/ fontstyle = ("Arial", 4%, false, false, false, false, 5, 1)
+/ erase = false
+</text>
+
+<text leftPointInstructions>
+/ items = ("If the middle arrow points that direction, <%expressions.buttoninstruct3%> that button")
+/ position = (50%, 60%)
+/ size = (80%, 5%)
+/ fontstyle = ("Arial", 4%, false, false, false, false, 5, 1)
+/ erase = false
+</text>
+
+<item feedback>
+/ 1 = "Great Job!"
+/ 2 = "The arrow pointed this way, so you should <%expressions.buttoninstruct3%> this button"
+</item>
+
+The following expressions are used to adapt the script instructions to mouse use if
+the detected monitor is not a touchscreen
+<expressions>
+/buttoninstruct1 = if (computer.touch){
+	"Put your pointer finger on"
+} else {
+	"Click"
+};
+/buttoninstruct2 = if (computer.touch) {
+	"put your finger back on the Home Button";} else {
+		"return the mouse to the Home Button"
+}
+/buttoninstruct3 = if (computer.touch) {
+	"press";} else {
+	"CLICK";
+}
+</expressions>
+
+
+<text reminder>
+/ items = ("middle")
+/ fontstyle = ("Arial", 4%, true, false, false, false, 5, 1)
+/ position = (50%, 50%)
+/ size = (50%, 5%)
+/ vjustify = center
+/ erase = false
+</text>
+
+<text welcome>
+/ items = ("Welcome!")
+/ position = (50%, 15%)
+/ size = (80%, 12%)
+/ fontstyle = ("Arial", 8%, true, false, false, false, 5, 1)
+</text>
+
+<text start>
+/ items = ("START")
+/ position = (50%, 75%)
+/ size = (20%, 12%)
+/ fontstyle = ("Arial", 5%, true, false, false, false, 5, 1)
+/ txbgcolor = blue
+/ txcolor = white
+/ vjustify = center
+</text>
+
+<text finish>
+/ items = ("Thank you!")
+/ fontstyle = ("Arial", 8%, true, false, false, false, 5, 1)
+/ position = (50%, 50%)
+/ size = (80%, 80%)
+/ vjustify = center
+</text>
+
+<text exit>
+/ items = ("EXIT")
+/ fontstyle = ("Arial", 5%, false, false, false, false, 5, 1)
+/ position = (90%, 90%)
+/ size = (20%, 8%)
+/ vjustify = center
+/ txbgcolor = blue
+/ txcolor = white
+</text>
+
+
+**************************************************************************************************************
+								!!!REMAINING CODE: Customize after careful consideration only!!!
+**************************************************************************************************************
+
+
+**************************************************************************************************************
+**************************************************************************************************************
+	DEFAULTS
+**************************************************************************************************************
+**************************************************************************************************************
+script requires Inquisit 5.0.11.0 or higher
+
+<defaults>
+/ canvasaspectratio = (4,3)
+/ minimumversion = "5.0.11.0"
+/ fontstyle = ("Arial", 4%, false, false, false, false, 5, 1)
+/ txbgcolor = white
+/ txcolor = black
+/ inputdevice = mouse
+</defaults>
+
+*******************************************************************************************************************
+*******************************************************************************************************************
+	DATA
+*******************************************************************************************************************
+*******************************************************************************************************************
+
+********************
+raw data
+********************
+
+<data>
+/ separatefiles = false
+/ columns = (build, computer.platform, date, time, subject, group, values.practice, values.countPracticeBlocks, blockcode, blocknum, values.blockcount, trialcode, trialnum, 
+values.trialcount, values.congruence, values.selecttarget, values.selectflanker, response, correct, latency, 
+list.ACC_practice.mean, values.practicePass)
+</data>
+
+********************
+summary data
+********************
+
+<summarydata>
+/ columns = (script.startdate, script.starttime, script.subjectid, script.groupid, script.elapsedtime, computer.platform, values.completed, values.blockcount, 
+values.countPracticeBlocks, list.ACC_practice.mean, values.practicePass,
+expressions.propcorrect, expressions.meanrt,
+expressions.propcorrect_congruent, expressions.propcorrect_incongruent,
+expressions.meanrt_congruent, expressions.meanrt_incongruent)
+/ separatefiles = false
+</summarydata>
+
+*******************************************************************************************************************
+*******************************************************************************************************************
+	VALUES: automatically updated
+*******************************************************************************************************************
+*******************************************************************************************************************
+
+/completed:								0 = script was not completed; 1 = script was completed (all conditions run)
+
+helper variables to select the appropriate stimuli
+/selecttarget:						 1 = right pointing center arrow; 2 = left pointing center arrow
+/selectflanker:						 1 = right pointing flanker arrows; 2 = left pointing flanker arrows
+/selectfeedback:					 1 = correct; 2 = incorrect
+
+various helper variables
+/congruence:						determines the state of the flankers (1 = congruent, 2 = incongruent)
+/practice:							1 = practice block; 0 = test block
+/trialcount:						counts all trials per block
+/correct:							1 = correct; 0 = otherwise
+
+/homeBase:							1 = participant has returned to home base; 0 = participant has not returned to home base yet
+/feedbackDuration:					the current feedback duration (in ms) depending on accuracy of response
+/selectInstructions:				helper variable to determine correct instructions
+
+/nextTrial:							helper variable to determine the next trial to run
+/stop:								1 = stop the current block (enough trials have been run); 0 = continue running trials in this block
+
+<values>
+/ completed = 0
+/ blockcount = 0
+
+/countPracticeBlocks = 0
+/practicePass = 1
+
+/ selecttarget = 0
+/ selectflanker = 0
+/ selectfeedback = 0
+
+/ congruence = 0
+/ practice = 0
+/ trialcount = 0
+/ACC = 0
+
+/homeBase = 0
+/feedbackDuration = 0
+/selectInstructions = 0
+
+/nextTrial = 0
+/stop = 0
+</values>
+
+*******************************************************************************************************************
+*******************************************************************************************************************
+	EXPRESSIONS
+*******************************************************************************************************************
+*******************************************************************************************************************
+/propcorrect:					overall proportion correct (test trials only)				
+/meanRT:						overall mean latency (ms) of correct responses (test trials only)
+
+/propcorrect_congruent:			proportion correct for all congruent trials
+/meanrt_congruent: 				mean latency (ms) of correct responses to congruent targets
+
+/propcorrect_incongruent:		proportion correct for all incongruent trials
+/meanrt_incongruent: 			mean latency (ms) of correct responses to incongruent targets
+
+<expressions>
+/ propcorrect = list.accuracy.mean
+/ meanRT = list.latency.mean
+
+/ propcorrect_congruent = list.accuracy_congruent.mean
+/ meanrt_congruent = list.latency_congruent.mean
+
+/ propcorrect_incongruent = list.accuracy_incongruent.mean
+/ meanrt_incongruent = list.latency_incongruent.mean
+</expressions>
+
+**************************************************************************************************************
+**************************************************************************************************************
+	INSTRUCTIONS
+**************************************************************************************************************
+**************************************************************************************************************
+
+<text instructions>
+/ items = instructions
+/ select = values.selectInstructions
+/ position = (50%, 50%)
+/ size = (80%, 80%)
+/ fontstyle = ("Arial", 4%, false, false, false, false, 5, 1)
+/ erase = false
+</text>
+
+<text homeBaseReminder>
+/ items = ("<%expressions.buttoninstruct2%>")
+/ fontstyle = ("Arial", 2%, false, false, false, false, 5, 1)
+/ position = (50%, 80%)
+/ size = (35%, 5%)
+/ vjustify = center
+/ txbgcolor = yellow
+</text>
+
+<picture redcircle>
+/ items = ("redcircle.png")
+/ position = (50%, 50%)
+/ size = (15%, 15%)
+</picture>
+
+<picture introstar>
+/ items = ("star.png")
+/ size = (5%, 5%)
+/ erase = false
+/ position = (27%, 21%)
+</picture>
+
+<picture teststar>
+/ items = ("star.png")
+/ size = (5%, 5%)
+/ erase = false
+/ position = (55%, 30%)
+</picture>
+
+<trial intro1>
+/ ontrialbegin = [
+	values.selectInstructions = 1;
+]
+/ stimulusframes = [1 = instructions, welcome, homeBase_HL]
+/ validresponse = (homeBase_HL)
+/ recorddata = false
+</trial>
+
+<trial intro2>
+/ ontrialbegin = [
+	values.selectInstructions = 2;
+	values.selecttarget = 1;
+	values.selectflanker = 1;
+	
+	trial.intro2.insertstimulustime(picture.redcircle, 2000);
+	trial.intro2.insertstimulustime(video.rightresponsebutton_animated, 2000);
+	trial.intro2.insertstimulustime(text.rightPointInstructions, 2000);
+]
+/ stimulusframes = [1 = clearscreen, instructions, leftresponsebutton, rightresponsebutton, homeBase, target, flanker1, flanker2 flanker3, flanker4]
+/ correctresponse = (rightresponsebutton)
+/ ontrialend = [
+	trial.intro2.resetstimulusframes();
+]
+/ recorddata = false
+</trial>
+
+<trial intro3>
+/ inputdevice = mouseover
+/ ontrialbegin = [
+	values.selectInstructions = 3;
+	trial.intro3.insertstimulustime(text.homeBaseReminder, 2000);
+]
+/ stimulusframes = [1 = clearscreen, instructions, homeBase_HL]
+/ correctresponse = (homeBase_HL)
+/ beginresponsetime = 0
+/ responseinterrupt = immediate
+/ correctmessage = true(shape.homeBase, 0)
+/ recorddata = false
+</trial>
+
+<trial intro4>
+/ pretrialpause = 500
+/ ontrialbegin = [
+	values.selectInstructions = 2;
+	values.selecttarget = 2;
+	values.selectflanker = 2;
+
+]
+/ stimulusframes = [1 = clearscreen, leftresponsebutton_animated, rightresponsebutton, 
+homeBase, target, flanker1, flanker2 flanker3, flanker4, redcircle, leftPointInstructions]
+/ correctresponse = (leftresponsebutton)
+/ recorddata = false
+</trial>
+
+<trial intro5>
+/ ontrialbegin = [
+	values.selectInstructions = 4;
+	values.selectflanker = 1;
+	values.selecttarget = 2;
+	trial.intro5.insertstimulustime(picture.redcircle, 1000);
+	trial.intro5.insertstimulustime(video.leftresponsebutton_animated, 1000);	
+]
+/ stimulusframes = [1 = clearscreen, instructions, target, flanker1, flanker2 flanker3, flanker4, homeBase, leftresponsebutton, rightresponsebutton]
+/ validresponse = (leftresponsebutton)
+/ recorddata = false
+</trial>
+
+<trial intro6>
+/ ontrialbegin = [
+	values.selectInstructions = 5;
+]
+/ stimulusframes = [1 = clearscreen, instructions, start]
+/ validresponse = (start)
+/ recorddata = false
+</trial>
+
+<trial testStart>
+/ ontrialbegin = [
+	values.selectInstructions = 6;
+	values.homeBase = 0;
+]
+/ stimulusframes = [1 = clearscreen, instructions, start]
+/ validresponse = (start)
+/ responsemessage = ("start", clearscreen, 0)
+/ recorddata = false
+</trial>
+
+
+<trial finish>
+/ stimulusframes = [1 = finish, exit]
+/ validresponse = (exit)
+/ recorddata = false
+</trial>
+
+
+*******************************************************************************************************************
+*******************************************************************************************************************
+	STIMULI
+*******************************************************************************************************************
+*******************************************************************************************************************
+<picture star>
+/ items = ("star.png")
+/ size = (5%, 5%)
+/ erase = false
+</picture>
+
+<picture leftresponsebutton>
+/ items = ("leftbutton.png")
+/ size = (15%, 15%)
+/ position = (25%, 80%)
+/ erase = false
+</picture>
+
+<picture leftresponsebutton_HL>
+/ items = ("leftbutton_hl.png")
+/ size = (15%, 15%)
+/ position = (25%, 80%)
+/ erase = false
+</picture>
+
+
+
+<picture rightresponsebutton>
+/ items = ("rightbutton.png")
+/ size = (15%, 15%)
+/ position = (75%, 80%)
+/ erase = false
+</picture>
+
+<picture rightresponsebutton_HL>
+/ items = ("rightbutton_hl.png")
+/ size = (15%, 15%)
+/ position = (75%, 80%)
+/ erase = false
+</picture>
+
+<video rightresponsebutton_animated>
+/ items = ("rightbutton_animated.gif")
+/ size = (15%, 15%)
+/ position = (75%, 80%)
+/ erase = false
+/ loop = true
+</video>
+
+<video leftresponsebutton_animated>
+/ items = ("leftbutton_animated.gif")
+/ size = (15%, 15%)
+/ position = (25%, 80%)
+/ erase = false
+/ loop = true
+</video>
+
+<shape homeBase>
+/ shape = circle
+/ size = (7%, 12%)
+/ color = gray
+/ position = (50%, 90%)
+/ erase = false
+</shape>
+
+<shape homeBase_HL>
+/ shape = circle
+/ size = (7%, 12%)
+/ color = orange
+/ position = (50%, 90%)
+/ erase = false
+</shape>
+
+**********************************
+Target and Flanker
+**********************************
+
+<picture target>
+/ items = arrows
+/ select = values.selecttarget
+/ position = (50%, 50%)
+/ size = (10%, 10%)
+/ erase = false
+</picture>
+
+<picture flanker1>
+/ items = arrows
+/ select = values.selectflanker
+/ vposition = 50%
+/ hposition = 26%
+/ size = (10%, 10%)
+/ erase = false
+</picture>
+
+<picture flanker2>
+/ items = arrows
+/ select = values.selectflanker
+/ vposition = 50%
+/ hposition = 38%
+/ size = (10%, 10%)
+/ erase = false
+</picture>
+
+<picture flanker3>
+/ items = arrows
+/ select = values.selectflanker
+/ vposition = 50%
+/ hposition = 62%
+/ size = (10%, 10%)
+/ erase = false
+</picture>
+
+<picture flanker4>
+/ items = arrows
+/ select = values.selectflanker
+/ vposition = 50%
+/ hposition = 74%
+/ size = (10%, 10%)
+/ erase = false
+</picture>
+
+********************************
+Miscelleneous Stimuli
+********************************
+<text feedback>
+/ items = feedback
+/ select = values.selectfeedback
+/ position = (50%, 65%)
+/ fontstyle = ("Arial", 3%, false, false, false, false, 5, 1)
+/ txcolor = black
+</text>
+
+*******************************************************************************************************************
+*******************************************************************************************************************
+	LISTS
+*******************************************************************************************************************
+*******************************************************************************************************************
+
+<list randomselection>
+/ items = (1, 2)
+/ replace = true
+/ selectionrate = always
+</list>
+
+*******************************
+data lists:
+fill during runtime
+*******************************
+
+<list ACC_practice>
+</list>
+
+Note: list stores 1 = correct response; 0 = incorrect response for each relevant trial
+<list accuracy>
+
+</list>
+Note: list stores the latency of correct responses for each relevant trial
+<list latency>
+</list>
+
+Note: list stores 1 = correct response; 0 = incorrect response for each relevant trial
+<list accuracy_congruent>
+</list>
+
+Note: list stores 1 = correct response; 0 = incorrect response for each relevant trial
+<list accuracy_incongruent>
+</list>
+
+Note: list stores the latency of correct responses for each relevant trial
+<list latency_congruent>
+</list>
+
+Note: list stores the latency of correct responses for each relevant trial
+<list latency_incongruent>
+</list>
+
+*******************************************************************************************************************
+*******************************************************************************************************************
+	TRIALS: practice
+*******************************************************************************************************************
+*******************************************************************************************************************
+
+<list nextPracticeTrial>
+/ items = (1, 2, 3, 4)
+/ poolsize = parameters.numberPracticeTrials
+/ replace = false
+/ resetinterval = 0
+</list>
+
+<trial selectPracticeTrial>
+/ ontrialbegin = [
+	values.nextTrial = list.nextPracticeTrial.nextvalue;
+	values.trialcount += 1;
+	if (values.trialcount > parameters.numberPracticeTrials){
+		values.stop = 1;
+	};
+]
+/ branch = [
+	if (values.nextTrial == 1){
+		trial.targetleft_congruent_practice;
+	} else if (values.nextTrial == 2){
+		trial.targetleft_incongruent_practice;
+	} else if (values.nextTrial == 3){
+		trial.targetright_congruent_practice;
+	} else if (values.nextTrial == 4){
+		trial.targetright_incongruent_practice;
+	};
+]
+/ trialduration = 0
+/ recorddata = false
+</trial>
+
+
+
+All trial sequences follow the same logic. Explanations are only given for the first.
+
+********************************
+Target points to the left
+********************************
+
+Note: trial.targetleft_congruent
+* presents the fixation star and reminder
+* presents the left pointing flankers and the left pointing target
+* max response time: parameters.responseTimeout 
+to give participant indefinite time to respond remove / response = timeout(parameters.responseTimeout)
+
+<trial targetleft_congruent_practice>
+/ ontrialbegin = [
+	values.homeBase = 0;
+	values.selecttarget = 2;
+	values.congruence = 1;
+	values.selectflanker = values.selecttarget;
+	trial.targetleft_congruent_practice.insertstimulustime(text.reminder, parameters.fixationDuration);		
+	trial.targetleft_congruent_practice.insertstimulustime(picture.flanker1, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetleft_congruent_practice.insertstimulustime(picture.flanker2, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetleft_congruent_practice.insertstimulustime(picture.target, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetleft_congruent_practice.insertstimulustime(picture.flanker3, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetleft_congruent_practice.insertstimulustime(picture.flanker4, (parameters.fixationDuration + parameters.reminderDuration));
+]
+/ stimulusframes = [1 = star, leftresponsebutton, rightresponsebutton, homeBase]
+/ beginresponsetime = (parameters.fixationDuration + parameters.reminderDuration)
+/ validresponse = (leftresponsebutton, rightresponsebutton)
+/ correctresponse = (leftresponsebutton)
+/ response = timeout(parameters.responseTimeout)
+/ responseinterrupt = immediate
+/ ontrialend = [
+	trial.targetleft_congruent_practice.resetstimulusframes();
+	list.ACC_practice.appenditem(trial.targetleft_congruent_practice.correct);
+	if (trial.targetleft_congruent_practice.correct){
+		values.selectfeedback = 1;
+		values.feedbackDuration = parameters.correctFeedbackDuration;
+	} else {
+		values.selectfeedback = 2;
+		values.feedbackDuration = parameters.errorFeedbackDuration;
+	};
+
+]	
+/ branch = [
+	trial.feedback;
+]
+/ recorddata = true
+/ responsemessage = (leftresponsebutton, picture.leftresponsebutton_HL, 100)
+/ responsemessage = (rightresponsebutton, picture.rightresponsebutton_HL, 100)
+</trial>
+
+ 
+<trial targetleft_incongruent_practice>
+/ ontrialbegin = [
+	values.homeBase = 0;
+	values.selecttarget = 2;
+	values.congruence = 2;
+	values.selectflanker = 1;
+	trial.targetleft_incongruent_practice.insertstimulustime(text.reminder, parameters.fixationDuration);		
+	trial.targetleft_incongruent_practice.insertstimulustime(picture.flanker1, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetleft_incongruent_practice.insertstimulustime(picture.flanker2, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetleft_incongruent_practice.insertstimulustime(picture.target, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetleft_incongruent_practice.insertstimulustime(picture.flanker3, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetleft_incongruent_practice.insertstimulustime(picture.flanker4, (parameters.fixationDuration + parameters.reminderDuration));
+]
+/ stimulusframes = [1 = star, leftresponsebutton, rightresponsebutton, homeBase]
+/ beginresponsetime = (parameters.fixationDuration + parameters.reminderDuration)
+/ validresponse = (leftresponsebutton, rightresponsebutton)
+/ correctresponse = (leftresponsebutton)
+/ response = timeout(parameters.responseTimeout)
+/ responseinterrupt = immediate
+/ ontrialend = [
+	trial.targetleft_incongruent_practice.resetstimulusframes();
+	list.ACC_practice.appenditem(trial.targetleft_incongruent_practice.correct);
+	if (trial.targetleft_incongruent_practice.correct){
+		values.selectfeedback = 1;
+		values.feedbackDuration = parameters.correctFeedbackDuration;
+	} else {
+		values.selectfeedback = 2;
+		values.feedbackDuration = parameters.errorFeedbackDuration;
+	};
+
+]	
+/ branch = [
+	trial.feedback;
+]
+/ recorddata = true
+/ responsemessage = (leftresponsebutton, picture.leftresponsebutton_HL, 100)
+/ responsemessage = (rightresponsebutton, picture.rightresponsebutton_HL, 100)
+</trial>
+
+********************************
+Target points to the right
+********************************
+
+<trial targetright_congruent_practice>
+/ ontrialbegin = [
+	values.homeBase = 0;
+	values.selecttarget = 1;
+	values.congruence = 1;
+	values.selectflanker = values.selecttarget;
+	trial.targetright_congruent_practice.insertstimulustime(text.reminder, parameters.fixationDuration);		
+	trial.targetright_congruent_practice.insertstimulustime(picture.flanker1, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetright_congruent_practice.insertstimulustime(picture.flanker2, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetright_congruent_practice.insertstimulustime(picture.target, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetright_congruent_practice.insertstimulustime(picture.flanker3, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetright_congruent_practice.insertstimulustime(picture.flanker4, (parameters.fixationDuration + parameters.reminderDuration));
+]
+/ stimulusframes = [1 = star, leftresponsebutton, rightresponsebutton, homeBase]
+/ beginresponsetime = (parameters.fixationDuration + parameters.reminderDuration)
+/ validresponse = (leftresponsebutton, rightresponsebutton)
+/ correctresponse = (rightresponsebutton)
+/ responseinterrupt = immediate
+/ response = timeout(parameters.responseTimeout)
+/ ontrialend = [
+	trial.targetright_congruent_practice.resetstimulusframes();
+	list.ACC_practice.appenditem(trial.targetright_congruent_practice.correct);
+	if (trial.targetright_congruent_practice.correct){
+		values.selectfeedback = 1;
+		values.feedbackDuration = parameters.correctFeedbackDuration;
+	} else {
+		values.selectfeedback = 2;
+		values.feedbackDuration = parameters.errorFeedbackDuration;
+	};
+
+]	
+/ branch = [
+	trial.feedback;
+]
+/ recorddata = true
+/ responsemessage = (leftresponsebutton, picture.leftresponsebutton_HL, 100)
+/ responsemessage = (rightresponsebutton, picture.rightresponsebutton_HL, 100)
+</trial>
+
+<trial targetright_incongruent_practice>
+/ ontrialbegin = [
+	values.homeBase = 0;
+	values.selecttarget = 1;
+	values.congruence = 2;
+	values.selectflanker = 2;
+	trial.targetright_incongruent_practice.insertstimulustime(text.reminder, parameters.fixationDuration);		
+	trial.targetright_incongruent_practice.insertstimulustime(picture.flanker1, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetright_incongruent_practice.insertstimulustime(picture.flanker2, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetright_incongruent_practice.insertstimulustime(picture.target, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetright_incongruent_practice.insertstimulustime(picture.flanker3, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetright_incongruent_practice.insertstimulustime(picture.flanker4, (parameters.fixationDuration + parameters.reminderDuration));
+]
+/ stimulusframes = [1 = star, leftresponsebutton, rightresponsebutton, homeBase]
+/ beginresponsetime = (parameters.fixationDuration + parameters.reminderDuration)
+/ validresponse = (leftresponsebutton, rightresponsebutton)
+/ correctresponse = (rightresponsebutton)
+/ responseinterrupt = immediate
+/ response = timeout(parameters.responseTimeout)
+/ ontrialend = [
+	trial.targetright_incongruent_practice.resetstimulusframes();
+	list.ACC_practice.appenditem(trial.targetright_incongruent_practice.correct);
+	if (trial.targetright_incongruent_practice.correct){
+		values.selectfeedback = 1;
+		values.feedbackDuration = parameters.correctFeedbackDuration;
+	} else {
+		values.selectfeedback = 2;
+		values.feedbackDuration = parameters.errorFeedbackDuration;
+	};
+
+]	
+/ branch = [
+	trial.feedback;
+]
+/ recorddata = true
+/ responsemessage = (leftresponsebutton, picture.leftresponsebutton_HL, 100)
+/ responsemessage = (rightresponsebutton, picture.rightresponsebutton_HL, 100)
+</trial>
+
+
+***********************************
+all trial sequences
+***********************************
+
+
+<trial feedback>
+/ inputdevice = mouseover
+/ ontrialbegin = [
+	if (values.selectfeedback == 2){
+		if (values.selecttarget == 1){
+			trial.feedback.insertstimulusframe(video.rightresponsebutton_animated, 1);
+		} else {
+			trial.feedback.insertstimulusframe(video.leftresponsebutton_animated, 1);
+		};
+	};
+	trial.feedback.insertstimulustime(picture.leftresponsebutton, values.feedbackDuration);
+	trial.feedback.insertstimulustime(picture.rightresponsebutton, values.feedbackDuration);	
+]
+/ stimulusframes = [1 = feedback]
+/ validresponse = (homeBase)
+/ beginresponsetime = 0
+/ responseinterrupt = frames
+/ recorddata = false
+/ timeout = values.feedbackDuration
+/ ontrialend = [
+	trial.feedback.resetstimulusframes();
+	if (trial.feedback.response == "homeBase"){
+		values.homeBase = 1;
+	} else {
+		values.homeBase = 0;
+	};
+]
+/ branch = [
+	if (values.homeBase == 1){
+		trial.homeBase2;
+	} else {
+		trial.homeBase;
+	};
+]
+</trial>
+
+
+*******************************************************************************************************************
+*******************************************************************************************************************
+	TRIALS: Test
+*******************************************************************************************************************
+*******************************************************************************************************************
+
+<list nextTrial>
+/ items = (1, 2, 3, 4)
+/ poolsize = parameters.numberTestTrials
+/ replace = false
+/ resetinterval = 0
+</list>
+
+<trial selectTrial>
+/ ontrialbegin = [
+	values.nextTrial = list.nextTrial.nextvalue;
+	values.trialcount += 1;
+	if (values.trialcount > parameters.numberTestTrials){
+		values.stop = 1;
+	};
+]
+/ branch = [
+	if (values.nextTrial == 1){
+		trial.targetleft_congruent;
+	} else if (values.nextTrial == 2){
+		trial.targetleft_incongruent;
+	} else if (values.nextTrial == 3){
+		trial.targetright_congruent;
+	} else if (values.nextTrial == 4){
+		trial.targetright_incongruent;
+	};
+]
+/ trialduration = 0
+/ recorddata = false
+</trial>
+
+
+Note: trial.homeBase waits for the homeButton to pressed before starting the next trial
+<trial homeBase>
+/ inputdevice = mouseover
+/ skip = [
+	values.homeBase == 1;
+]
+/ ontrialbegin = [
+	trial.homeBase.insertstimulustime(text.homeBaseReminder, parameters.homeBaseReminder);
+]
+/ stimulusframes = [1 = clearscreen, leftresponsebutton, rightresponsebutton, homeBase]
+/ beginresponsetime = 0
+/ responseinterrupt = immediate
+/ validresponse = (homeBase)
+/ correctresponse = (homeBase)
+/ recorddata = false
+/ correctmessage = (homeBase, 0)
+/ ontrialend = [
+	trial.homeBase.resetstimulusframes();
+	values.homeBase = 1;
+]
+/ branch = [
+	if (values.practice == 1){
+		trial.selectPracticeTrial;
+	} else {
+		trial.selectTrial;
+	}
+]
+</trial>
+
+Note: trial.homeBase does not wait for the homeButton to be pressed. It ends after 2000ms and calls the next trials
+<trial homeBase2>
+/ inputdevice = mouseover
+/ stimulusframes = [1 = clearscreen, leftresponsebutton, rightresponsebutton, homeBase]
+/ recorddata = false
+/ trialduration = 2000
+/ branch = [
+	if (values.practice == 1){
+		trial.selectPracticeTrial;
+	} else {
+		trial.selectTrial;
+	}
+]
+</trial>
+
+
+
+All trial sequences follow the same logic. Explanations are only given for the first.
+
+********************************
+Target points to the left
+********************************
+
+Note: trial.targetleft_congruent
+* presents the cue = empty rectangular box for either a fixed or variable duration
+* determines the size of the target
+* presents the left pointing flankers and the left pointing target
+* max stimulus presentation = parameters.SOA_targetcue ; 
+to give participant indefinite time to respond remove / response = timeout(parameters.SOA_targetcue)
+
+<trial targetleft_congruent>
+/ ontrialbegin = [
+	values.homeBase = 0;
+	values.selecttarget = 2;
+	values.congruence = 1;
+	values.selectflanker = values.selecttarget;
+	trial.targetleft_congruent.insertstimulustime(text.reminder, parameters.fixationDuration);		
+	trial.targetleft_congruent.insertstimulustime(picture.flanker1, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetleft_congruent.insertstimulustime(picture.flanker2, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetleft_congruent.insertstimulustime(picture.target, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetleft_congruent.insertstimulustime(picture.flanker3, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetleft_congruent.insertstimulustime(picture.flanker4, (parameters.fixationDuration + parameters.reminderDuration));
+]
+/ stimulusframes = [1 = star, leftresponsebutton, rightresponsebutton, homeBase]
+/ beginresponsetime = (parameters.fixationDuration + parameters.reminderDuration)
+/ validresponse = (leftresponsebutton, rightresponsebutton)
+/ correctresponse = (leftresponsebutton)
+/ response = timeout(parameters.responseTimeout)
+/ responseinterrupt = immediate
+/ ontrialend = [
+	trial.targetleft_congruent.resetstimulusframes();
+	if (trial.targetleft_congruent.correct) {
+		values.ACC = 1;
+	} else {
+		values.ACC = 0;
+	};
+	list.accuracy.insertitem(values.ACC, 1);
+	list.accuracy_congruent.insertitem(values.ACC, 1);
+	if (values.ACC == 1) {
+		list.latency.insertitem(trial.targetleft_congruent.latency, 1);
+		list.latency_congruent.insertitem(trial.targetleft_congruent.latency, 1);
+	};
+]	
+/ branch = [
+	trial.homeBase;
+]
+/ recorddata = true
+/ responsemessage = (leftresponsebutton, picture.leftresponsebutton_HL, 100)
+/ responsemessage = (rightresponsebutton, picture.rightresponsebutton_HL, 100)
+</trial>
+
+<trial targetleft_incongruent>
+/ ontrialbegin = [
+	values.homeBase = 0;
+	values.selecttarget = 2;
+	values.congruence = 2;
+	values.selectflanker = 1;
+	trial.targetleft_incongruent.insertstimulustime(text.reminder, parameters.fixationDuration);		
+	trial.targetleft_incongruent.insertstimulustime(picture.flanker1, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetleft_incongruent.insertstimulustime(picture.flanker2, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetleft_incongruent.insertstimulustime(picture.target, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetleft_incongruent.insertstimulustime(picture.flanker3, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetleft_incongruent.insertstimulustime(picture.flanker4, (parameters.fixationDuration + parameters.reminderDuration));
+]
+/ stimulusframes = [1 = star, leftresponsebutton, rightresponsebutton, homeBase]
+/ beginresponsetime = (parameters.fixationDuration + parameters.reminderDuration)
+/ validresponse = (leftresponsebutton, rightresponsebutton)
+/ correctresponse = (leftresponsebutton)
+/ response = timeout(parameters.responseTimeout)
+/ responseinterrupt = immediate
+/ ontrialend = [
+	trial.targetleft_incongruent.resetstimulusframes();
+	if (trial.targetleft_incongruent.correct) {
+		values.ACC = 1;
+	} else {
+		values.ACC = 0;
+	};
+
+	list.accuracy.insertitem(values.ACC, 1);
+	list.accuracy_incongruent.insertitem(values.ACC, 1);
+	if (values.ACC == 1) {
+		list.latency.insertitem(trial.targetleft_incongruent.latency, 1);
+		list.latency_incongruent.insertitem(trial.targetleft_incongruent.latency, 1);
+	} ;
+]	
+
+/ branch = [
+	trial.homeBase;
+]
+/ recorddata = true
+/ responsemessage = (leftresponsebutton, picture.leftresponsebutton_HL, 100)
+/ responsemessage = (rightresponsebutton, picture.rightresponsebutton_HL, 100)
+</trial>
+
+********************************
+Target points to the right
+********************************
+
+<trial targetright_congruent>
+/ ontrialbegin = [
+	values.homeBase = 0;
+	values.selecttarget = 1;
+	values.congruence = 1;
+	values.selectflanker = values.selecttarget;
+	trial.targetright_congruent.insertstimulustime(text.reminder, parameters.fixationDuration);		
+	trial.targetright_congruent.insertstimulustime(picture.flanker1, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetright_congruent.insertstimulustime(picture.flanker2, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetright_congruent.insertstimulustime(picture.target, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetright_congruent.insertstimulustime(picture.flanker3, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetright_congruent.insertstimulustime(picture.flanker4, (parameters.fixationDuration + parameters.reminderDuration));
+]
+/ stimulusframes = [1 = star, leftresponsebutton, rightresponsebutton, homeBase]
+/ beginresponsetime = (parameters.fixationDuration + parameters.reminderDuration)
+/ validresponse = (leftresponsebutton, rightresponsebutton)
+/ correctresponse = (rightresponsebutton)
+/ responseinterrupt = immediate
+/ response = timeout(parameters.responseTimeout)
+/ ontrialend = [
+	trial.targetright_congruent.resetstimulusframes();
+	if (trial.targetright_congruent.correct) {
+		values.ACC = 1;
+	} else {
+		values.ACC = 0;
+	};
+	list.accuracy.insertitem(values.ACC, 1);
+	list.accuracy_congruent.insertitem(values.ACC, 1);
+	if (values.ACC == 1) {
+		list.latency.insertitem(trial.targetright_congruent.latency, 1);
+		list.latency_congruent.insertitem(trial.targetright_congruent.latency, 1);
+	};
+]	
+/ recorddata = true
+/ branch = [
+	trial.homeBase;
+]
+/ responsemessage = (leftresponsebutton, picture.leftresponsebutton_HL, 100)
+/ responsemessage = (rightresponsebutton, picture.rightresponsebutton_HL, 100)
+</trial>
+
+<trial targetright_incongruent>
+/ ontrialbegin = [
+	values.homeBase = 0;
+	values.selecttarget = 1;
+	values.congruence = 2;
+	values.selectflanker = 2;
+	trial.targetright_incongruent.insertstimulustime(text.reminder, parameters.fixationDuration);		
+	trial.targetright_incongruent.insertstimulustime(picture.flanker1, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetright_incongruent.insertstimulustime(picture.flanker2, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetright_incongruent.insertstimulustime(picture.target, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetright_incongruent.insertstimulustime(picture.flanker3, (parameters.fixationDuration + parameters.reminderDuration));
+	trial.targetright_incongruent.insertstimulustime(picture.flanker4, (parameters.fixationDuration + parameters.reminderDuration));
+]
+/ stimulusframes = [1 = star, leftresponsebutton, rightresponsebutton, homeBase]
+/ beginresponsetime = (parameters.fixationDuration + parameters.reminderDuration)
+/ validresponse = (leftresponsebutton, rightresponsebutton)
+/ correctresponse = (rightresponsebutton)
+/ responseinterrupt = immediate
+/ response = timeout(parameters.responseTimeout)
+/ ontrialend = [
+	trial.targetright_incongruent.resetstimulusframes();
+	if (trial.targetright_incongruent.correct) {
+		values.ACC = 1;
+	} else {
+		values.ACC = 0;
+	};
+
+	list.accuracy.insertitem(values.ACC, 1);
+	list.accuracy_incongruent.insertitem(values.ACC, 1);
+	if (values.ACC == 1) {
+		list.latency.insertitem(trial.targetright_incongruent.latency, 1);
+		list.latency_incongruent.insertitem(trial.targetright_incongruent.latency, 1);
+	} ;
+]	
+
+/ branch = [
+	trial.homeBase;
+]
+/ recorddata = true
+/ responsemessage = (leftresponsebutton, picture.leftresponsebutton_HL, 100)
+/ responsemessage = (rightresponsebutton, picture.rightresponsebutton_HL, 100)
+</trial>
+
+*******************************************************************************************************************
+*******************************************************************************************************************
+	BLOCKS
+*******************************************************************************************************************
+*******************************************************************************************************************
+
+<block intro>
+/ trials = [
+	1 = intro1; 
+	2 = intro2; 
+	3 = intro3; 
+	4 = intro4; 
+	5 = intro5; 
+	6 = intro6;
+]
+</block>
+
+
+<block practice>
+/ stop = [
+	values.stop == 1;
+]
+/ onblockbegin = [
+	values.practice = 1;
+	values.countPracticeBlocks += 1;
+	list.ACC_practice.reset();
+	values.stop = 0;
+	values.trialcount = 0;
+]
+/ trials = [1 = homeBase]
+/ onblockend = [
+	if (list.ACC_practice.mean >= parameters.minPracticeACC){
+		values.practicePass = 1;
+	} else {
+		values.practicePass = 0;
+	};
+	
+	if (monkey.monkeymode){
+		values.practicePass = 1;
+	};
+]
+/ branch = [
+	if (!values.practicePass){
+		if (values.countPracticeBlocks < parameters.maxPracticeRuns){
+			block.practice;
+		};
+	};
+]
+</block>
+
+
+<block arrowFlanker>
+/ stop = [
+	values.stop == 1;
+]
+/ skip = [
+	!values.practicePass;
+]
+/ onblockbegin = [
+	values.practice = 0;
+	values.blockcount += 1;
+	values.stop = 0;
+	values.trialcount = 0;
+]
+/ trials = [
+	1 = testStart; 
+	2 = homeBase; 
+]
+</block>
+
+
+<block finish>
+/ trials = [1 = finish]
+</block>
+
+
+*******************************************************************************************************************
+*******************************************************************************************************************
+EXPERIMENT
+*******************************************************************************************************************
+*******************************************************************************************************************
+
+<expt>
+/ blocks = [
+	1 = intro;
+	2 = practice;
+	3 = arrowFlanker;
+	4 = finish
+]
+/ onexptend = [values.completed = 1]
+</expt>
+
+*******************************************************************************************************************
+												End of File
+*******************************************************************************************************************
